@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const app = express();
-const port = 3001;
+const port = 3000;
 
 app.use(cors());
 //app.use(morgan());
@@ -57,7 +57,7 @@ app.get('/usuarios/buscar',(req,res)=>{
         // apellido = query.apellido
 
     
-    const result = listUser.filter((u)=>u.nombre===nombre/* && u.apellido===apellido*/);
+    const result = listUser.filter((u)=>u.nombre===nombre && u.apellido===apellido);
 
     if (result.length>0)
         res.status(200).json({
@@ -70,6 +70,23 @@ app.get('/usuarios/buscar',(req,res)=>{
             msg:"No Encontrado"
         })
 })    
+
+app.get('/usuarios/buscar/id',(req,res)=>{
+    const {query}=req;
+    const {id}=query; 
+    const result = listUser.filter((u)=>u.id==id);
+
+    if (result.length>0)
+        res.status(200).json({
+            ok:true,
+            result
+        })
+    else
+        res.status(404).json({
+            ok:false,
+            msg:"No Encontrado"
+        })
+})  
 
 app.listen(port,()=>{
     console.log(`Servidor Corriendo en el puerto ${port}`);
